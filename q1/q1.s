@@ -35,6 +35,7 @@ insert:
 go_left:
     ld t1,8(a0)                 #root->left
     mv a0,t1
+    ld a1,16(sp)
     call insert                 #returns the root of the tree with the inserted node(assuming that a0 is the new root)
     #ld x1,0(sp)
     #ld a1,16(sp)
@@ -46,6 +47,7 @@ go_left:
 go_right:
     ld t1,16(a0)
     mv a0,t1
+    ld a1,16(sp)
     call insert
     ld t2,8(sp)
     sd a0,16(t2)
@@ -80,6 +82,7 @@ get:
 
 search_right:
     ld a0,16(a0)
+    ld a1,16(sp)
     call get
     ld x1,0(sp)
     addi sp,sp,24
@@ -87,6 +90,7 @@ search_right:
 
 search_left:
     ld a0,8(a0)
+    ld a1,16(sp)
     call get
     ld x1,0(sp)
     addi sp,sp,24
@@ -102,7 +106,7 @@ return_null:
 getAtMost:
     li t0, -1          # ans = -1
 
-    loop:
+loop:
     beq a1, x0, done   # if root == NULL
 
     lw t1, 0(a1)       # root->val
