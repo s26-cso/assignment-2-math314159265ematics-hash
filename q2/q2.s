@@ -1,6 +1,6 @@
 .data
-    format_str: .string"%d "
-    newline: .string"\n"
+    format_str: .string "%d "
+    newline: .string "\n"
 .text
 .global main
 main:
@@ -42,7 +42,7 @@ loop:
 
     ld t2,0(t5)     #This takes the string number arguement
     li t6,0         #This is the integer value of the string initialised to zero
-    li t7,0         #This is the flag to check if the number is negative we have initialised it to zero(meaning positive)
+    li a5,0         #This is the flag to check if the number is negative we have initialised it to zero(meaning positive)
     mv a2,t2        #t2 is havig the string number,we move that to a2(Note that all a1,a2,a3, here are not used and are also similar to temporary register i.e can be used without needing to save it
 
 
@@ -50,7 +50,7 @@ loop:
     lb a3, 0(a2)
     li a4, 45               # ASCII value for '-'(minus sign)
     bne a3, a4, convert     # If not minus, jump to normal conversion
-    li t7, 1                # Set negative flag
+    li a5, 1                # Set negative flag
     addi a2, a2, 1          # Move pointer past the '-' character
 
 
@@ -68,7 +68,7 @@ loop:
         j convert
 
     done:
-        beq t7,x0,store_val
+        beq a5,x0,store_val
         neg t6,t6
     store_val:
         sw t6,0(t4)
@@ -169,3 +169,4 @@ exit:
     
     li a0, 0
     ret
+    
