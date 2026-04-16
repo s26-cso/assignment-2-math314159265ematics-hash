@@ -1,5 +1,6 @@
 .data
-    format_str: .string "%d "
+    format_str: .string "%d"
+    space: .string " "
     newline: .string "\n"
 .text
 .global main
@@ -142,7 +143,7 @@ print_results:
     mv s4, s2               # pointer to nge array
 
 print_loop:
-    bge t0, s0, exit        # if counter >= N, exit
+    bge t0, s0, print_newline        # if counter >= N, exit
 
     la a0, format_str       # "%d "
     lw a1, 0(s4)            # Load nge[i]
@@ -153,9 +154,24 @@ print_loop:
     ld t0, 0(sp)
     addi sp, sp, 8
     
+    addi t2, t0, 1          # t2 = counter + 1
+    bge t2, s0, skip_space  # if next would be end, skip space
+
+    la a0, space
+    addi sp, sp, -8
+    sd t0, 0(sp)
+    call printf
+    ld t0, 0(sp)
+    addi sp, sp, 8
+
+skip_space:
     addi s4, s4, 4          # Next element
     addi t0, t0, 1          # counter++
     j print_loop
+
+    print_newline:
+    la a0, newline
+    call printf
     
 exit:
     ld a0,0(sp)
